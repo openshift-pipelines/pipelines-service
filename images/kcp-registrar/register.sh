@@ -113,22 +113,15 @@ switch_ws() {
 }
 
 register() {
-    printf "Getting the list of registered clusters\n"
-    existing_clusters=$(KUBECONFIG=${kcp_kcfg} kubectl get workloadclusters -o name)
-
     for i in "${!clusters[@]}"; do
-        printf "Processing cluster %s\n" "${clusters[$i]}"
-        if echo "${existing_clusters}" | grep "${clusters[$i]}"; then
-            printf "Cluster already registered\n"
-        else
-            printf "Registering cluster\n"
-            syncer_manifest="/tmp/syncer-${clusters[$i]}.yaml"
-            KUBECONFIG=${kcp_kcfg} kubectl kcp workload sync "${clusters[$i]}" \
-                --syncer-image ghcr.io/kcp-dev/kcp/syncer:$KCP_TAG \
-                --resources deployments.apps,services,ingresses.networking.k8s.io,conditions.tekton.dev,pipelines.tekton.dev,pipelineruns.tekton.dev,pipelineresources.tekton.dev,runs.tekton.dev,tasks.tekton.dev,taskruns.tekton.dev \
-                >"$syncer_manifest"
-            KUBECONFIG=${DATA_DIR}/credentials/kubeconfig/compute/${kubeconfigs[$i]} kubectl apply --context ${contexts[$i]} -f "$syncer_manifest"
-        fi
+        cluster_name="${clusters[$i]}"
+        printf "  - %s\n" "$cluster_name"
+        syncer_manifest="/tmp/syncer-$cluster_name.yaml"
+        KUBECONFIG="$kcp_kcfg" kubectl kcp workload sync "$cluster_name" \
+            --syncer-image ghcr.io/kcp-dev/kcp/syncer:$KCP_TAG \
+            --resources deployments.apps,services,ingresses.networking.k8s.io,conditions.tekton.dev,pipelines.tekton.dev,pipelineruns.tekton.dev,pipelineresources.tekton.dev,runs.tekton.dev,tasks.tekton.dev,taskruns.tekton.dev \
+            >"$syncer_manifest"
+        KUBECONFIG="$kubeconfig_dir/compute/${kubeconfigs[$i]}" kubectl apply --context ${contexts[$i]} -f "$syncer_manifest"
     done
 }
 
