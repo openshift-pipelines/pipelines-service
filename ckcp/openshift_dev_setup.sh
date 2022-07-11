@@ -274,6 +274,7 @@ install_compute(){
   "$SCRIPT_DIR/../images/access-setup/content/bin/setup_compute.sh" \
     --kubeconfig "$KUBECONFIG" \
     --work-dir "$WORK_DIR"
+  exit 1
 
   echo "  - Deploy compute:"
   "$SCRIPT_DIR/../images/cluster-setup/install.sh" --workspace-dir "$WORK_DIR"
