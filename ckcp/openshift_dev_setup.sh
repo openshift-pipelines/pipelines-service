@@ -11,15 +11,15 @@ SCRIPT_DIR="$(
 GITOPS_DIR="$(dirname "$SCRIPT_DIR")/gitops"
 CKCP_DIR="$(dirname "$SCRIPT_DIR")/ckcp"
 KUBECONFIG=${KUBECONFIG:-$HOME/.kube/config}
-CR_TO_SYNC=(	
-            deployments.apps	
-            services	
-            ingresses.networking.k8s.io	
-            pipelines.tekton.dev	
-            pipelineruns.tekton.dev	
-            runs.tekton.dev	
-            tasks.tekton.dev	
-            networkpolicies.networking.k8s.io	
+CR_TO_SYNC=(
+            deployments.apps
+            services
+            ingresses.networking.k8s.io
+            pipelines.tekton.dev
+            pipelineruns.tekton.dev
+            runs.tekton.dev
+            tasks.tekton.dev
+            networkpolicies.networking.k8s.io
           )
 
 usage() {
@@ -75,6 +75,7 @@ parse_args() {
 
 init() {
   APP_LIST="openshift-gitops tekton-results ckcp compute"
+
   cluster_type="openshift"
 
   # Create SRE repository folder
