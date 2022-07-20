@@ -18,7 +18,9 @@ We want to make the onboarding experience to use Pipelines-service as easy and c
 
 Following the Phase 1 architecture described [here](../docs/images/phase1.png), we structured GitOps to set up an OpenShift cluster, i.e.,
 
-- Install pipelines and triggers components on the physical cluster via GitOps Application.
+- Install various dependencies on the physical cluster via GitOps Applications.
+  - tekton pipelines and triggers
+  - tekton chains
 - Log into kcp, and register the clusters using the credentials for accessing kcp shared instance.
 
 Post this, a user will be able to log in to kcp workspace and start creating PipelineRuns :)
@@ -73,7 +75,7 @@ _Note: Please run these scripts only if you intend not to use PaC to automate th
     $ WORKSPACE_DIR=/home/workspace/pipelines-service/gitops/sre ../images/cluster-setup/install.sh
     ```
 
-    b. To access and setup kcp
+    b. To setup kcp and register the compute cluster
 
     ```
     $ KCP_ORG="root:pipelines-service" KCP_WORKSPACE="compute" DATA_DIR="/home/workspace/pipelines-service/gitops/sre" ../images/kcp-registrar/register.sh

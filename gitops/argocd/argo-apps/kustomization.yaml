@@ -1,2 +1,4 @@
 resources:
   - tektoncd.yaml
+  - tekton-chains.yaml
+
